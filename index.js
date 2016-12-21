@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, shell } = require('electron')
 const path = require('path')
 const windowStateKeeper = require('electron-window-state')
 
@@ -37,6 +37,11 @@ function createWindow() {
   win.loadURL(meteorRootURL)
 
   win.webContents.openDevTools()
+
+  win.webContents.on('new-window', (e, url) => {
+    e.preventDefault()
+    shell.openExternal(url)
+  })
 
   win.on('closed', () => {
     win = null

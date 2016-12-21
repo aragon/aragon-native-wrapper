@@ -19,6 +19,7 @@ const Keybase = {
     })
   },
   saveProof: (proofPayload, cb) => {
+    console.log(proofPayload)
     this.getUsername((err, username) => {
       const proof = JSON.parse(proofPayload)
       if (username !== proof.username) { return cb(new Error('username doesnt match')) }
