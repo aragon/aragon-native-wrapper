@@ -1,9 +1,8 @@
 const fs = require('fs')
 const path = require('path')
+const KeybaseRPC = require('./rpc')
 
-const rpc = require('./rpc')
-
-rpc((client) => {})
+const rpc = new KeybaseRPC()
 
 const proofFilename = 'ethereum_test.json' // TODO: Some day it won't be a test lol
 const keybasePublicDirectory = user => path.join('/keybase/public', user || String())
@@ -12,8 +11,11 @@ const proofPath = user => path.join(keybasePublicDirectory(user), proofFilename)
 // TODO: Promisify all this?
 const Keybase = {
   getUsername: (cb) => {
-    fs.readdir(keybasePublicDirectory(), (err, dirs) => {
-      cb(err, dirs[0])
+    rpc.invoke('config.getCurrentStatus', null, (err, res) => {
+      console.log(res)
+      if (!res.loggedIn) return cb(false)
+
+      return cb(null, res.user.username)
     })
   },
   saveProof: (proofPayload, cb) => {
