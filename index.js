@@ -22,6 +22,8 @@ function createWindow() {
     y: windowState.y,
     width: windowState.width,
     height: windowState.height,
+    minWidth: 1280,
+    minHeight: 768,
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: false,
