@@ -1,4 +1,6 @@
-const { ipcRenderer } = require('electron')
+const { ipcRenderer, webFrame } = require('electron')
+
+webFrame.registerURLSchemeAsPrivileged('cors')
 
 process.once('loaded', () => {
   window.ipcRenderer = ipcRenderer
