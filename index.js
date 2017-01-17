@@ -11,6 +11,8 @@ const meteorRootURL = 'http://localhost:3000'
 
 let win = null
 
+protocol.registerStandardSchemes(['metamask'])
+
 function setCustomProtocols() {
   // TODO: Only supporting GET for now
   protocol.registerBufferProtocol('cors', (req, cb) => {
@@ -24,10 +26,10 @@ function setCustomProtocols() {
     })
     request.end()
   })
-  /* protocol.registerHttpProtocol('metamask', (req, cb) => {
-    const parsedURL = url.parse(req.url)
-    cb({ path: `${url.resolve(__dirname, '.metamask')}/dist/chrome/${parsedURL.host}` })
-  }) */
+  protocol.registerFileProtocol('metamask', (req, cb) => {
+    const filePath = req.url.replace('metamask://app/', '')
+    cb({ path: `${url.resolve(__dirname, '.metamask')}/dist/chrome/${filePath}` })
+  })
 }
 
 function createWindow() {
@@ -46,7 +48,6 @@ function createWindow() {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: false,
-      // webSecurity: false,
       preload: path.join(__dirname, './preload.js'),
     },
   })
