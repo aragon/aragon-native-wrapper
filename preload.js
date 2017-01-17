@@ -1,6 +1,7 @@
 const { ipcRenderer, webFrame } = require('electron')
 
-webFrame.registerURLSchemeAsPrivileged('cors')
+webFrame.registerURLSchemeAsPrivileged('cors', { bypassCSP: false })
+webFrame.registerURLSchemeAsPrivileged('metamask')
 
 process.once('loaded', () => {
   window.ipcRenderer = ipcRenderer
