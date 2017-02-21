@@ -7,11 +7,13 @@ const url = require('url')
 
 new Intertron(exposedAPI)
 
-const meteorRootURL = 'http://localhost:3000'
+const DEV = true
+
+const meteorRootURL = (DEV) ? 'http://localhost:3000' : 'aragon://app/index.html'
 
 let win = null
 
-protocol.registerStandardSchemes(['metamask'])
+protocol.registerStandardSchemes(['aragon', 'metamask'])
 
 function setCustomProtocols() {
   // TODO: Only supporting GET for now
@@ -25,6 +27,11 @@ function setCustomProtocols() {
       res.on('end', () => cb({ data: new Buffer(data) }))
     })
     request.end()
+  })
+  protocol.registerFileProtocol('aragon', (req, cb) => {
+    const filePath = req.url.replace('aragon://app/', '')
+    const distPath = path.resolve(`${__dirname}/../../app-dist`)
+    cb({ path: `${distPath}/${filePath.split(/[?#]/)[0]}` })
   })
   protocol.registerFileProtocol('metamask', (req, cb) => {
     const filePath = req.url.replace('metamask://app/', '')
