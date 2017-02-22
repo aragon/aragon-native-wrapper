@@ -7,7 +7,7 @@ const url = require('url')
 
 new Intertron(exposedAPI)
 
-const DEV = true
+const DEV = false
 
 const meteorRootURL = (DEV) ? 'http://localhost:3000' : 'aragon://app/index.html'
 
@@ -30,12 +30,13 @@ function setCustomProtocols() {
   })
   protocol.registerFileProtocol('aragon', (req, cb) => {
     const filePath = req.url.replace('aragon://app/', '')
-    const distPath = path.resolve(`${__dirname}/../../app-dist`)
+    const distPath = (DEV) ? path.resolve(`${__dirname}/../../app-dist`) : path.resolve(`${__dirname}/aragon`)
     cb({ path: `${distPath}/${filePath.split(/[?#]/)[0]}` })
   })
   protocol.registerFileProtocol('metamask', (req, cb) => {
     const filePath = req.url.replace('metamask://app/', '')
-    cb({ path: `${url.resolve(__dirname, '.metamask')}/dist/chrome/${filePath}` })
+    const distPath = (DEV) ? `${url.resolve(__dirname, '.metamask')}/dist/chrome/${filePath}` : path.resolve(`${__dirname}/metamask/${filePath}`)
+    cb({ path: distPath })
   })
 }
 
@@ -68,12 +69,6 @@ function createWindow() {
   win.webContents.on('new-window', (e, windowURL) => {
     e.preventDefault()
     shell.openExternal(windowURL)
-    /* if (!url.startsWith('http://127.0.0.1:9001')) {
-      e.preventDefault()
-      shell.openExternal(url)
-    } else {
-      window.open(url)
-    } */
   })
 
   win.on('closed', () => {
