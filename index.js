@@ -7,9 +7,7 @@ const url = require('url')
 
 new Intertron(exposedAPI)
 
-const DEV = false
-
-const meteorRootURL = (DEV) ? 'http://localhost:3000' : 'aragon://app/index.html'
+const meteorRootURL = (process.defaultApp) ? 'http://localhost:3000' : 'aragon://app/index.html'
 
 let win = null
 
@@ -30,12 +28,12 @@ function setCustomProtocols() {
   })
   protocol.registerFileProtocol('aragon', (req, cb) => {
     const filePath = req.url.replace('aragon://app/', '')
-    const distPath = (DEV) ? path.resolve(`${__dirname}/../../app-dist`) : path.resolve(`${__dirname}/aragon`)
+    const distPath = path.resolve(`${__dirname}/aragon`)
     cb({ path: `${distPath}/${filePath.split(/[?#]/)[0]}` })
   })
   protocol.registerFileProtocol('metamask', (req, cb) => {
     const filePath = req.url.replace('metamask://app/', '')
-    const distPath = (DEV) ? `${url.resolve(__dirname, '.metamask')}/dist/chrome/${filePath}` : path.resolve(`${__dirname}/metamask/${filePath}`)
+    const distPath = (process.defaultApp) ? `${url.resolve(__dirname, '.metamask')}/dist/chrome/${filePath}` : path.resolve(`${__dirname}/metamask/${filePath}`)
     cb({ path: distPath })
   })
 }
