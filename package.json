@@ -1,5 +1,5 @@
 {
-  "name": "aragon-wrapper",
+  "name": "Aragon alpha",
   "version": "0.1.0",
   "dependencies": {
     "electron": "^1.4.12",
