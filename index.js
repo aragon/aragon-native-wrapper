@@ -66,11 +66,16 @@ function createWindow() {
 
   win.loadURL(meteorRootURL)
 
-  win.webContents.openDevTools()
+  if (process.defaultApp) win.webContents.openDevTools()
 
   win.webContents.on('new-window', (e, windowURL) => {
     e.preventDefault()
     shell.openExternal(windowURL)
+  })
+
+  win.webContents.on('will-navigate', (e) => {
+    e.preventDefault()
+    win.loadURL(meteorRootURL)
   })
 
   win.on('closed', () => {

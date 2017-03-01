@@ -1,87 +1,79 @@
-const { app } = require('electron')
+const { app, shell } = require('electron')
 
 const template = [
   {
     label: 'Edit',
     submenu: [
       {
-        role: 'undo'
+        role: 'undo',
       },
       {
-        role: 'redo'
+        role: 'redo',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
-        role: 'cut'
+        role: 'cut',
       },
       {
-        role: 'copy'
+        role: 'copy',
       },
       {
-        role: 'paste'
+        role: 'paste',
       },
       {
-        role: 'pasteandmatchstyle'
+        role: 'pasteandmatchstyle',
       },
       {
-        role: 'delete'
+        role: 'delete',
       },
       {
-        role: 'selectall'
-      }
-    ]
+        role: 'selectall',
+      },
+    ],
   },
   {
     label: 'View',
     submenu: [
       {
-        role: 'reload'
+        label: 'Reload',
+        accelerator: 'CommandOrControl+R',
+        click(menuItem, win) {
+          win.loadURL((process.defaultApp) ? 'http://localhost:3000' : 'aragon://app/index.html')
+        },
       },
       {
-        role: 'toggledevtools'
+        role: 'toggledevtools',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
-        role: 'resetzoom'
+        role: 'togglefullscreen',
       },
-      {
-        role: 'zoomin'
-      },
-      {
-        role: 'zoomout'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'togglefullscreen'
-      }
-    ]
+    ],
   },
   {
     role: 'window',
     submenu: [
       {
-        role: 'minimize'
+        role: 'minimize',
       },
       {
-        role: 'close'
-      }
-    ]
+        role: 'close',
+      },
+    ],
   },
   {
     role: 'help',
     submenu: [
       {
         label: 'Learn More',
-        click () { require('electron').shell.openExternal('http://electron.atom.io') }
-      }
-    ]
-  }
+        click() { shell.openExternal('http://aragon.one') },
+      },
+    ],
+  },
 ]
 
 if (process.platform === 'darwin') {
@@ -89,50 +81,50 @@ if (process.platform === 'darwin') {
     label: app.getName(),
     submenu: [
       {
-        role: 'about'
+        role: 'about',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
         role: 'services',
-        submenu: []
+        submenu: [],
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
-        role: 'hide'
+        role: 'hide',
       },
       {
-        role: 'hideothers'
+        role: 'hideothers',
       },
       {
-        role: 'unhide'
+        role: 'unhide',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
-        role: 'quit'
-      }
-    ]
+        role: 'quit',
+      },
+    ],
   })
   // Edit menu.
   template[1].submenu.push(
     {
-      type: 'separator'
+      type: 'separator',
     },
     {
       label: 'Speech',
       submenu: [
         {
-          role: 'startspeaking'
+          role: 'startspeaking',
         },
         {
-          role: 'stopspeaking'
-        }
-      ]
+          role: 'stopspeaking',
+        },
+      ],
     }
   )
   // Window menu.
@@ -140,24 +132,24 @@ if (process.platform === 'darwin') {
     {
       label: 'Close',
       accelerator: 'CmdOrCtrl+W',
-      role: 'close'
+      role: 'close',
     },
     {
       label: 'Minimize',
       accelerator: 'CmdOrCtrl+M',
-      role: 'minimize'
+      role: 'minimize',
     },
     {
       label: 'Zoom',
-      role: 'zoom'
+      role: 'zoom',
     },
     {
-      type: 'separator'
+      type: 'separator',
     },
     {
       label: 'Bring All to Front',
-      role: 'front'
-    }
+      role: 'front',
+    },
   ]
 }
 
