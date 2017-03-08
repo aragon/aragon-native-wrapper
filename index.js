@@ -1,9 +1,10 @@
 const { app, BrowserWindow, shell, protocol, net, Menu } = require('electron')
 const path = require('path')
+const url = require('url')
 const windowStateKeeper = require('electron-window-state')
 const Intertron = require('intertron')
 const exposedAPI = require('./api')
-const url = require('url')
+const appMenu = require('./menu')
 
 new Intertron(exposedAPI)
 
@@ -52,14 +53,19 @@ function createWindow() {
     minWidth: 1280,
     minHeight: 768,
     titleBarStyle: 'hidden',
+    backgroundColor: '#1F1F1F',
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       preload: path.join(__dirname, './preload.js'),
     },
   })
 
+  win.once('ready-to-show', () => {
+    win.show()
+  })
 
-  const menu = Menu.buildFromTemplate(require('./menu'))
+  const menu = Menu.buildFromTemplate(appMenu)
   Menu.setApplicationMenu(menu)
 
   windowState.manage(win)
