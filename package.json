@@ -1,6 +1,6 @@
 {
   "name": "Aragon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "dependencies": {
     "electron": "^1.4.12",
     "electron-window-state": "^4.0.0",
