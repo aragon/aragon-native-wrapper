@@ -1,6 +1,18 @@
+const os = require('os')
 const rpc = require('framed-msgpack-rpc')
 
-const path = `/Users/${process.env.USER}/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock`
+let path
+
+switch (os.platform()) {
+  case 'darwin':
+    path = `/Users/${process.env.USER}/Library/Group Containers/keybase/Library/Caches/Keybase/keybased.sock`
+    break
+  case 'win32':
+    path = `\\\\.\\pipe\\kbservice${process.env.LOCALAPPDATA.slice(2)}\\Keybase`
+    break
+  default:
+    path = `${process.env.XDG_RUNTIME_DIR}/keybase/keybased.sock`
+}
 
 class KeybaseRPC {
   constructor() {
